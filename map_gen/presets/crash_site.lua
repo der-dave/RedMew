@@ -9,6 +9,9 @@ local OutpostBuilder = require 'map_gen.presets.crash_site.outpost_builder'
 local math = require 'utils.math'
 local degrees = math.degrees
 local ScenarioInfo = require 'features.gui.info'
+local RS = require 'map_gen.shared.redmew_surface'
+local map_gen_settings_presets = require 'resources.map_gen_settings'
+
 
 -- Comment out this block if you're getting scenario info from another source.
 ScenarioInfo.set_map_name('Crashsite')
@@ -16,6 +19,8 @@ ScenarioInfo.set_map_description('Capture outposts and defend against the biters
 ScenarioInfo.add_map_extra_info(
     '- Outposts have enemy turrets defending them.\n- Outposts have loot and provide a steady stream of resources.\n- Outpost markets with different resources and at prices.\n- Capturing outposts increases evolution.\n- Reduced damage by all player weapons, turrets, and ammo.\n- Biters have more health and deal more damage.'
 )
+
+RS.map_gen_settings = map_gen_settings_presets.no_cliff_ore
 
 -- leave seeds nil to have them filled in based on teh map seed.
 local outpost_seed = nil --91000
@@ -378,9 +383,9 @@ local function init()
     local max_worm_chance = 1 / 32
     local worm_chance_factor = 1 / (32 * 512)
 
-    local scale_factor = 1 / 32
+    --local scale_factor = 1 / 32
 
-    local function enemy(x, y, world)
+    local function enemy(_, _, world)
         local wx, wy = world.x, world.y
         local d = math.sqrt(wx * wx + wy * wy)
 
@@ -566,7 +571,7 @@ local map
 Global.register_init(
     {},
     function(tbl)
-        local seed = game.surfaces[1].map_gen_settings.seed
+        local seed = RS.get_surface().map_gen_settings.seed
         tbl.outpost_seed = outpost_seed or seed
         tbl.ore_seed = ore_seed or seed
 

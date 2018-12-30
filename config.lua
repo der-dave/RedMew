@@ -9,12 +9,20 @@ global.config = {
         enabled = true,
         -- The title of the map
         map_name_key = 'This Map has no name',
-        -- The long description of the map, typically 1 paragraph
+        -- the long description of the map, typically 1 paragraph
         map_description_key = "This section is supposed to be filled out on a per map basis. If you're seeing this message, ping the admin team to get a description added for this map. A 20 coin bonus is available to the first person to point this out.",
-        -- The feature list of the map
+        -- the feature list of the map
         map_extra_info_key = 'This map has no extra information',
-        -- New Scenario Features, appears in the "What's new" tab
+        -- new Scenario Features, appears in the "What's new" tab
         new_info_key = 'Nothing is new. The world is at peace',
+    },
+    -- by default the redmew scenario completely controls world generation when a preset map is loaded
+    -- you can toggle this behaviour completely with 'enabled' or the individual modules
+    redmew_surface = {
+        enabled = true,
+        map_gen_settings = true,
+        map_settings = true,
+        difficulty = true,
     },
     -- adds a command to scale UPS and movement speed. Use with caution as it might break scenarios that modify movement speed
     performance = {
