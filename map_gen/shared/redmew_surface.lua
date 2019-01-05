@@ -184,8 +184,8 @@ local function create_redmew_surface()
         surface = game.create_surface(surface_name)
     end
 
-    set_difficulty_settings()
-    set_map_settings()
+    --set_difficulty_settings()
+    --set_map_settings()
 
     surface.request_to_generate_chunks({0, 0}, 4)
     surface.force_generate_chunk_requests()
