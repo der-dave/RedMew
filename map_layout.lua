@@ -169,6 +169,6 @@ if shape then
         [RS.get_surface_name()] = shape,
     }
 
-    require('map_gen.shared.generate')({surfaces = surfaces, regen_decoratives = regen_decoratives, tiles_per_tick = tiles_per_tick})
-    --require ("map_gen.shared.generate_not_threaded")({surfaces = surfaces, regen_decoratives = regen_decoratives})
+    require('map_gen.shared.generate').init({surfaces = surfaces, regen_decoratives = regen_decoratives, tiles_per_tick = tiles_per_tick})
+    --require ("map_gen.shared.generate_not_threaded").init({surfaces = surfaces, regen_decoratives = regen_decoratives})
 end

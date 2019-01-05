@@ -208,7 +208,38 @@ local function on_chunk(event)
     Task.queue_task(map_gen_action_token, data, total_calls)
 end
 
-local function init(args)
+local on_chunk_runtime =
+    Token.register(
+    function(event)
+        local surface = event.surface
+        local shape = surfaces[surface.name]
+
+        if not shape then
+            return
+        end
+
+        local area = event.area
+
+        local data = {
+            y = 0,
+            x = area.left_top.x,
+            area = area,
+            top_x = area.left_top.x,
+            top_y = area.left_top.y,
+            surface = surface,
+            tiles = {},
+            hidden_tiles = {},
+            entities = {},
+            decoratives = {}
+        }
+
+        Task.queue_task(map_gen_action_token, data, total_calls)
+    end
+)
+
+local Public = {}
+
+function Public.init(args)
     tiles_per_tick = args.tiles_per_tick or 32
     regen_decoratives = args.regen_decoratives or false
     surfaces = args.surfaces or {}
@@ -218,4 +249,14 @@ local function init(args)
     Event.add(defines.events.on_chunk_generated, on_chunk)
 end
 
-return init
+function Public.runtime(args)
+    tiles_per_tick = args.tiles_per_tick or 32
+    regen_decoratives = args.regen_decoratives or false
+    surfaces = args.surfaces or {}
+
+    total_calls = math.ceil(1024 / tiles_per_tick) + 5
+
+    Event.add_removable(defines.events.on_chunk_generated, on_chunk_runtime)
+end
+
+return Public

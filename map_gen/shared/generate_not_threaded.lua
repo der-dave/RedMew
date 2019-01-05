@@ -110,6 +110,40 @@ local function do_place_entities(data)
     end
 end
 
+local on_chunk_runtime =
+    Token.register(
+    function(event)
+        local surface = event.surface
+        local shape = surfaces[surface.name]
+
+        if not shape then
+            return
+        end
+
+        local area = event.area
+
+        local data = {
+            area = area,
+            top_x = area.left_top.x,
+            top_y = area.left_top.y,
+            surface = surface,
+            tiles = {},
+            hidden_tiles = {},
+            entities = {},
+            decoratives = {}
+        }
+
+        for row = 0, 31 do
+            do_row(row, data, shape)
+        end
+
+        do_place_tiles(data)
+        do_place_hidden_tiles(data)
+        do_place_entities(data)
+        do_place_decoratives(data)
+    end
+)
+
 local function on_chunk(event)
     local surface = event.surface
     local shape = surfaces[surface.name]
@@ -141,11 +175,26 @@ local function on_chunk(event)
     do_place_decoratives(data)
 end
 
-local function init(args)
+local Public = {}
+
+function Public.init(args)
     regen_decoratives = args.regen_decoratives
     surfaces = args.surfaces or {}
 
     Event.add(defines.events.on_chunk_generated, on_chunk)
 end
 
-return init
+function Public.runtime(args)
+    regen_decoratives = args.regen_decoratives
+    surfaces = args.surfaces or {}
+
+    Event.add_removable(defines.events.on_chunk_generated, on_chunk_runtime)
+    Debug.print('added runtime')
+end
+
+function Public.remove_runtime()
+    Event.remove_removable(defines.events.on_chunk_generated, on_chunk_runtime)
+    Debug.print('removed runtime')
+end
+
+return Public
