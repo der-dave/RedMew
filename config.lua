@@ -1,4 +1,4 @@
-_DEBUG = false
+_DEBUG = true
 _CHEATS = false
 _DUMP_ENV = false
 local market_item = 'coin'
