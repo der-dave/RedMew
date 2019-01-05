@@ -16,6 +16,8 @@ local shape = nil
 local regen_decoratives = false
 local tiles_per_tick = 32
 
+require "map_gen.biter_lane_wars.scenario"
+
 --combined--
 --shape = require "map_gen.combined.island_resort"
 --require "map_gen.combined.red_planet_v2"
